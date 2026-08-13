@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="منصة محفظة رقمية احترافية - إدارة أموالك بسهولة">
+    <meta name="theme-color" content="#6C3CE1">
+    <title>💰 المحفظة الذهبية - نظام الأموال الرقمي</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           1. CSS VARIABLES & ROOT
+           ============================================ */
+        :root {
+            --primary: #6C3CE1;
+            --primary-dark: #5B2FC7;
+            --primary-light: #8B6CF2;
+            --secondary: #00D4AA;
+            --secondary-dark: #00B894;
+            --danger: #FF3D71;
+            --warning: #FFB800;
+            --info: #2D9CDB;
+            --dark-bg: #0A0A15;
+            --dark-card: #16213E;
+            --dark-light: #1A1A2E;
+            --gray: #8A8FA3;
+            --gray-light: #B0B5C9;
+            --light: #E8EAF6;
+            --white: #FFFFFF;
+            --radius: 24px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            --shadow: 0 8px 32px rgba(108,60,225,0.3);
+            --glass-bg: rgba(255,255,255,0.05);
+            --glass-border: rgba(255,255,255,0.08);
+        }
+
+        /* ============================================
+           2. RESET & BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--dark-bg);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-attachment: fixed;
+            background-image: 
+                radial-gradient(ellipse at 10% 20%, rgba(108,60,225,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(0,212,170,0.08) 0%, transparent 50%);
+        }
+
+        /* ============================================
+           3. SCROLLBAR CUSTOMIZATION
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* ============================================
+           4. CONTAINER LAYOUTS
+           ============================================ */
+        .app {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(108,60,225,0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ============================================
+           5. HEADER & NAVBAR
+           ============================================ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo i {
+            -webkit-text-fill-color: var(--primary-light);
+            filter: drop-shadow(0 4px 12px rgba(108,60,225,0.3));
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(108,60,225,0.3);
+            border: 2px solid rgba(255,255,255,0.1);
+            font-size: 18px;
+            position: relative;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.08);
+            border-color: var(--primary-light);
+            box-shadow: 0 6px 20px rgba(108,60,225,0.4);
+        }
+
+        .user-avatar .online-indicator {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 50%;
+            border: 2px solid var(--dark-card);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,170,0.7); }
+            50% { box-shadow: 0 0 0 6px rgba(0,212,170,0); }
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--light);
+        }
+
+        .user-email {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        /* ============================================
+           6. BALANCE CARD
+           ============================================ */
+        .balance-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: var(--radius-md);
+            padding: 32px 24px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(108,60,225,0.35);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .balance-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 50px rgba(108,60,225,0.4);
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+
+        .balance-card::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -15%;
+            width: 240px;
+            height: 240px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 50%;
+        }
+
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 20px;
+        }
+
+        .balance-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance-icon {
+            font-size: 32px;
+            color: rgba(255,255,255,0.2);
+        }
+
+        .balance-amount {
+            font-size: 48px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            margin-bottom: 16px;
+        }
+
+        .balance-amount .currency {
+            font-size: 22px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.6);
+            margin-left: 4px;
+        }
+
+        .balance-footer {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .balance-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .balance-stat-label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .balance-stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* ============================================
+           7. ACTION BUTTONS
+           ============================================ */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .action-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 16px 12px;
+            text-align: center;
+            color: var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            background: rgba(108,60,225,0.15);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108,60,225,0.15);
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .action-btn i {
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .action-btn .badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: var(--danger);
+            color: white;
+            font-size: 10px;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 2px 10px rgba(255,61,113,0.3);
+        }
+
+        /* ============================================
+           8. SECTIONS & TITLES
+           ============================================ */
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--light);
+        }
+
+        .section-title i {
+            color: var(--primary-light);
+            font-size: 16px;
+        }
+
+        .section-title .view-all {
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--primary-light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .section-title .view-all:hover {
+            color: var(--secondary);
+        }
+
+        /* ============================================
+           9. TRANSACTION LIST
+           ============================================ */
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .transaction-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .transaction-item:hover {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.02);
+            transform: translateX(-4px);
+        }
+
+        .transaction-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .transaction-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: rgba(108,60,225,0.15);
+            color: var(--primary-light);
+        }
+
+        .transaction-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .transaction-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--light);
+        }
+
+        .transaction-time {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .transaction-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--secondary);
+        }
+
+        .transaction-status {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: rgba(0,212,170,0.15);
+            color: var(--secondary);
+            text-transform: uppercase;
+        }
+
+        .transaction-status.pending {
+            background: rgba(255,184,0,0.15);
+            color: var(--warning);
+        }
+
+        .transaction-status.rejected {
+            background: rgba(255,61,113,0.15);
+            color: var(--danger);
+        }
+
+        /* ============================================
+           10. MODALS & OVERLAYS
+           ============================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: flex-end;
+            align-items: flex-end;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--dark-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius) var(--radius) 0 0;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 88vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-title i {
+            color: var(--primary-light);
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: var(--gray);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        /* ============================================
+           11. FORMS & INPUTS
+           ============================================ */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            color: var(--light);
+            font-size: 15px;
+            font-family: 'Tajawal', sans-serif;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.06);
+            box-shadow: 0 0 0 3px rgba(108,60,225,0.15);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--gray-light);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238A8FA3' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 12px center;
+            padding-left: 36px;
+        }
+
+        /* ============================================
+           12. BUTTONS
+           ============================================ */
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(108,60,225,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(108,60,225,0.4);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: var(--light);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--glass-border);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,212,170,0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,212,170,0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), var(--danger-dark));
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============================================
+           13. NOTIFICATIONS
+           ============================================ */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .notification {
+            background: var(--dark-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            max-width: 360px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideInRight 0.4s ease;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .notification.warning {
+            border-left: 4px solid var(--warning);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--info);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .notification-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* ============================================
+           14. UTILITY CLASSES
+           ============================================ */
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gap-8 {
+            gap: 8px;
+        }
+
+        .gap-12 {
+            gap: 12px;
+        }
+
+        .mt-8 {
+            margin-top: 8px;
+        }
+
+        .mt-16 {
+            margin-top: 16px;
+        }
+
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--gray);
+        }
+
+        .text-success {
+            color: var(--secondary);
+        }
+
+        .text-danger {
+            color: var(--danger);
+        }
+
+        /* ============================================
+           15. RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+                border-radius: 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .balance-amount {
+                font-size: 40px;
+            }
+
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-content {
+                border-radius: var(--radius) var(--radius) 0 0;
+            }
+
+            .notification {
+                max-width: calc(100vw - 40px);
+            }
+        }
+
+        @media (max-height: 800px) {
+            .container {
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- MAIN CONTAINER -->
+        <div class="container">
+            <!-- HEADER -->
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-wallet"></i> المحفظة
+                </div>
+                <div class="user-section">
+                    <div class="user-avatar" onclick="showUserMenu()">
+                        <span id="userInitials">AH</span>
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name" id="userName">أحمد حسن</div>
+                        <div class="user-email" id="userEmail">user@example.com</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BALANCE CARD -->
+            <div class="balance-card" onclick="toggleBalanceVisibility()">
+                <div class="balance-header">
+                    <div class="balance-label">
+                        <i class="fas fa-eye-slash"></i> رصيدك
+                    </div>
+                    <div class="balance-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                </div>
+                <div class="balance-amount">
+                    <span id="balanceAmount">0.00</span>
+                    <span class="currency">ج.م</span>
+                </div>
+                <div class="balance-footer">
+                    <div class="balance-stat">
+                        <div class="balance-stat-label">عمليات اليوم</div>
+                        <div class="balance-stat-value" id="todayTransactions">0</div>
+                    </div>
+                    <div class="balance-stat">
+                        <div class="balance-stat-label">المحفظة النشطة</div>
+                        <div class="balance-stat-value">✅ نشطة</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="action-grid">
+                <button class="action-btn" onclick="openModal('depositModal')">
+                    <i class="fas fa-arrow-down"></i>
+                    استقبال أموال
+                    <span class="badge" id="depositBadge" style="display: none;">1</span>
+                </button>
+                <button class="action-btn" onclick="openModal('transferModal')">
+                    <i class="fas fa-arrow-right"></i>
+                    تحويل أموال
+                </button>
+                <button class="action-btn" onclick="openModal('withdrawModal')">
+                    <i class="fas fa-arrow-up"></i>
+                    سحب أموال
+                </button>
+                <button class="action-btn" onclick="openModal('historyModal')">
+                    <i class="fas fa-history"></i>
+                    السجل
+                </button>
+            </div>
+
+            <!-- RECENT TRANSACTIONS -->
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    آخر العمليات
+                    <span class="view-all" onclick="openModal('historyModal')">عرض الكل</span>
+                </div>
+                <div class="transaction-list" id="transactionList">
+                    <div class="transaction-item text-center text-muted">
+                        <i class="fas fa-inbox"></i> لا توجد عمليات بعد
+                    </div>
+                </div>
+            </div>
+
+            <!-- PENDING WITHDRAWALS -->
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-clock"></i>
+                    عمليات معلقة
+                    <span class="view-all" onclick="openModal('withdrawalsModal')">عرض الكل</span>
+                </div>
+                <div class="transaction-list" id="pendingWithdrawals">
+                    <div class="transaction-item text-center text-muted">
+                        <i class="fas fa-check-circle"></i> لا توجد عمليات معلقة
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOGOUT BUTTON -->
+            <button class="btn btn-secondary mt-16" onclick="logoutUser()">
+                <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================
+         MODALS
+         ============================================ -->
+
+    <!-- DEPOSIT MODAL -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-download"></i> استقبال أموال
+                </div>
+                <button class="modal-close" onclick="closeModal('depositModal')"></button>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-credit-card"></i> اختر طريقة الدفع
+                </div>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="selectPaymentMethod('vodafone')">
+                        <i class="fas fa-mobile-alt"></i> فودافون
+                    </button>
+                    <button class="action-btn" onclick="selectPaymentMethod('etisalat')">
+                        <i class="fas fa-sim-card"></i> اتصالات
+                    </button>
+                    <button class="action-btn" onclick="selectPaymentMethod('instapay')">
+                        <i class="fas fa-wallet"></i> إنستا باي
+                    </button>
+                    <button class="action-btn" onclick="selectPaymentMethod('orange')">
+                        <i class="fas fa-phone"></i> أورنج
+                    </button>
+                </div>
+            </div>
+
+            <div id="paymentMethodForm" class="hidden mt-16">
+                <div class="form-group">
+                    <label class="form-label">المبلغ (ج.م)</label>
+                    <input type="number" id="depositAmount" class="form-input" placeholder="أدخل المبلغ" min="10" max="50000">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">رقم التحويل</label>
+                    <input type="text" id="depositPhone" class="form-input" placeholder="أدخل رقم التحويل">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">رفع لقطة الشاشة</label>
+                    <div class="file-upload" onclick="document.getElementById('depositScreenshot').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <input type="file" id="depositScreenshot" accept="image/*" style="display: none;">
+                    </div>
+                    <div id="depositFileInfo" class="text-muted mt-8" style="font-size: 12px;"></div>
+                </div>
+
+                <button class="btn btn-primary" onclick="submitDeposit()">
+                    <i class="fas fa-check-circle"></i> تأكيد الطلب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRANSFER MODAL -->
+    <div class="modal-overlay" id="transferModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-exchange-alt"></i> تحويل أموال
+                </div>
+                <button class="modal-close" onclick="closeModal('transferModal')"></button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">رقم المحفظة المستقبلة</label>
+                <input type="text" id="recipientNumber" class="form-input" placeholder="أدخل رقم محفظة المستقبل">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">المبلغ (ج.م)</label>
+                <input type="number" id="transferAmount" class="form-input" placeholder="أدخل المبلغ" min="1">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">الملاحظات (اختياري)</label>
+                <textarea id="transferNote" class="form-textarea" placeholder="أضف ملاحظة..."></textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="submitTransfer()">
+                <i class="fas fa-paper-plane"></i> إرسال التحويل
+            </button>
+        </div>
+    </div>
+
+    <!-- WITHDRAW MODAL -->
+    <div class="modal-overlay" id="withdrawModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-arrow-up"></i> سحب أموال
+                </div>
+                <button class="modal-close" onclick="closeModal('withdrawModal')"></button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">المبلغ (ج.م)</label>
+                <input type="number" id="withdrawAmount" class="form-input" placeholder="أدخل المبلغ" min="50">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">طريقة السحب</label>
+                <select id="withdrawMethod" class="form-select">
+                    <option value="bank">تحويل بنكي</option>
+                    <option value="mobile">محفظة موبايل</option>
+                    <option value="check">شيك</option>
+                </select>
+            </div>
+
+            <div id="withdrawMethodDetails"></div>
+
+            <button class="btn btn-primary" onclick="submitWithdraw()">
+                <i class="fas fa-coins"></i> طلب السحب
+            </button>
+        </div>
+    </div>
+
+    <!-- HISTORY MODAL -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-history"></i> سجل العمليات
+                </div>
+                <button class="modal-close" onclick="closeModal('historyModal')"></button>
+            </div>
+
+            <div class="transaction-list" id="fullTransactionList"></div>
+        </div>
+    </div>
+
+    <!-- WITHDRAWALS MODAL -->
+    <div class="modal-overlay" id="withdrawalsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-clock"></i> سجل طلبات السحب
+                </div>
+                <button class="modal-close" onclick="closeModal('withdrawalsModal')"></button>
+            </div>
+
+            <div class="transaction-list" id="fullWithdrawalsList"></div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS CONTAINER -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <script>
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+        const APP = {
+            user: null,
+            token: localStorage.getItem('esim_token') || null,
+            balance: 0,
+            transactions: [],
+            withdrawals: [],
+            ws: null,
+            selectedPaymentMethod: null
+        };
+
+        // ============================================
+        // UTILITIES
+        // ============================================
+        const $ = id => document.getElementById(id);
+        const $$ = sel => document.querySelectorAll(sel);
+
+        function notify(title, message, type = 'info', duration = 5000) {
+            const container = $('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            
+            notification.innerHTML = `
+                <div class="notification-icon">${icons[type]}</div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+            `;
+
+            container.appendChild(notification);
+            setTimeout(() => notification.remove(), duration);
+        }
+
+        function openModal(modalId) {
+            const modal = $(modalId);
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = $(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        // ============================================
+        // UI INTERACTIONS
+        // ============================================
+        function toggleBalanceVisibility() {
+            const amount = $('balanceAmount');
+            if (amount.textContent === '****') {
+                amount.textContent = '0.00';
+            } else {
+                amount.textContent = '****';
+            }
+        }
+
+        function showUserMenu() {
+            notify('قائمة المستخدم', 'اختر ملف شخصي أو إعدادات', 'info');
+        }
+
+        function selectPaymentMethod(method) {
+            APP.selectedPaymentMethod = method;
+            const form = $('paymentMethodForm');
+            form.classList.remove('hidden');
+            notify('تم الاختيار', `تم اختيار ${method}`, 'success');
+        }
+
+        function submitDeposit() {
+            const amount = $('depositAmount').value;
+            const phone = $('depositPhone').value;
+            
+            if (!amount || !phone) {
+                notify('خطأ', 'الرجاء ملء جميع الحقول', 'error');
+                return;
+            }
+
+            notify('تم الإرسال', `تم إرسال طلب إيداع بمبلغ ${amount} ج.م`, 'success');
+            closeModal('depositModal');
+        }
+
+        function submitTransfer() {
+            notify('قيد الإعداد', 'ميزة التحويل قريباً', 'warning');
+        }
+
+        function submitWithdraw() {
+            notify('قيد الإعداد', 'ميزة السحب قريباً', 'warning');
+        }
+
+        function logoutUser() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('esim_token');
+                notify('تم الخروج', 'تم تسجيل الخروج بنجاح', 'success');
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 1500);
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        function initApp() {
+            // Load user data
+            const userName = $('userName');
+            const userEmail = $('userEmail');
+            const userInitials = $('userInitials');
+            
+            userName.textContent = 'أحمد حسن';
+            userEmail.textContent = 'ahmed@example.com';
+            userInitials.textContent = 'AH';
+
+            // Set balance
+            $('balanceAmount').textContent = '1,250.50';
+
+            notify('أهلاً وسهلاً', 'مرحباً بك في المحفظة الذهبية', 'success');
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initApp);
+
+        // Close modals on outside click
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
